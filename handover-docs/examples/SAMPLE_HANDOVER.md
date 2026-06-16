@@ -14,14 +14,16 @@
 
 ---
 
-## 1. プロジェクト概要
+# ① 案件概要
+
+## 1-1. プロジェクト概要
 
 - **何をするものか**: EC サイトの注文を受け付け、在庫引当と決済を行う REST API。
 - **ビジネス上の役割 / なぜ存在するか**: フロント（Web/アプリ）と決済・在庫システムの間に立つ中核サービス。ここが落ちると注文が一切受けられない。
 - **主なユーザー / 利用者**: 社内のフロントエンドチーム、モバイルアプリチーム。
 - **現在のステータス**: 運用中（1日あたり約 12,000 注文）
 
-## 2. 技術スタック / アーキテクチャ
+## 1-2. 技術スタック / アーキテクチャ
 
 - **言語 / ランタイム**: Python 3.12
 - **主要フレームワーク・ライブラリ**: FastAPI, SQLAlchemy, Alembic, Celery
@@ -35,7 +37,27 @@
                             |                                  --> [在庫サービス(社内gRPC)]
 ```
 
-## 3. リポジトリ構成
+## 1-3. 関係者・連絡先
+
+| 役割 | 氏名 | 連絡先 | 備考 |
+| --- | --- | --- | --- |
+| プロダクトオーナー | 佐藤 花子 | sato@example.com | 仕様の最終判断者 |
+| 後任エンジニア | 田中 太郎 | tanaka@example.com | |
+| インフラ / SRE | SRE チーム | #sre (Slack) | オンコール体制あり |
+| 外部ベンダー | （なし） | | |
+
+## 1-4. 関連ドキュメント・リンク集
+
+- 設計ドキュメント: https://confluence.example.com/orderbook/design
+- インフラリポジトリ: https://github.com/example/infra
+- Datadog ダッシュボード: https://app.datadoghq.com/dashboard/orderbook
+- Slack チャンネル: #orders / #orderbook-dev
+
+---
+
+# ② 開発環境セットアップ
+
+## 2-1. リポジトリ構成
 
 | ディレクトリ / ファイル | 役割 |
 | --- | --- |
@@ -47,7 +69,7 @@
 | `tests/` | pytest テスト |
 | `docker-compose.yml` | ローカル開発用の DB/Redis |
 
-## 4. ローカル開発環境のセットアップ
+## 2-2. ローカル開発環境のセットアップ
 
 前提:
 - Docker / Docker Compose, Python 3.12, Poetry
@@ -66,9 +88,9 @@ poetry run alembic upgrade head
 poetry run uvicorn app.main:app --reload
 ```
 
-- **必要な環境変数**: `DATABASE_URL`, `REDIS_URL`, `STRIPE_API_KEY`, `INVENTORY_GRPC_HOST`（値はセクション8参照）
+- **必要な環境変数**: `DATABASE_URL`, `REDIS_URL`, `STRIPE_API_KEY`, `INVENTORY_GRPC_HOST`（値は 2-4 参照）
 
-## 5. ビルド・テスト・デプロイ
+## 2-3. ビルド・テスト・デプロイ
 
 | 操作 | コマンド / 手順 |
 | --- | --- |
@@ -80,7 +102,21 @@ poetry run uvicorn app.main:app --reload
 - **デプロイ手順**: `main` へのマージで自動。手動デプロイは `gh workflow run deploy.yml -f env=production`。
 - **ロールバック手順**: ECS コンソールで 1 つ前のタスク定義リビジョンに更新。または `deploy.yml` に過去の image tag を指定して再実行。
 
-## 6. 実行環境・インフラ
+## 2-4. 設定とシークレットの管理場所
+
+> ⚠ シークレットの値そのものはここに書かない。保管場所だけ。
+
+| シークレット / 設定 | 保管場所 | 取得・更新方法 |
+| --- | --- | --- |
+| DB 認証情報 | AWS Secrets Manager `prod/orderbook/db` | ECS タスクに自動注入 |
+| Stripe API キー | AWS Secrets Manager `prod/orderbook/stripe` | Stripe ダッシュボードで再発行可 |
+| ローカル開発用の値 | 1Password「Orderbook 開発」ボールト | チームメンバーに共有依頼 |
+
+---
+
+# ③ 運用・保守
+
+## 3-1. 実行環境・インフラ
 
 | 環境 | URL / 場所 | ホスティング | 備考 |
 | --- | --- | --- | --- |
@@ -91,7 +127,7 @@ poetry run uvicorn app.main:app --reload
 - **インフラ管理方法**: Terraform（別リポジトリ `example/infra` の `orderbook/` 配下）
 - **ドメイン / 証明書の管理**: Route53 + ACM。証明書は自動更新。
 
-## 7. 外部サービス・依存・連携先
+## 3-2. 外部サービス・依存・連携先
 
 | サービス | 用途 | 管理コンソール / 連絡先 | アカウント所有者 |
 | --- | --- | --- | --- |
@@ -99,17 +135,7 @@ poetry run uvicorn app.main:app --reload
 | 在庫サービス (社内) | 在庫引当 (gRPC) | 担当: 在庫チーム #inventory | 在庫チーム |
 | Datadog | 監視 / APM | app.datadoghq.com | SRE チーム |
 
-## 8. 設定とシークレットの管理場所
-
-> ⚠ シークレットの値そのものはここに書かない。保管場所だけ。
-
-| シークレット / 設定 | 保管場所 | 取得・更新方法 |
-| --- | --- | --- |
-| DB 認証情報 | AWS Secrets Manager `prod/orderbook/db` | ECS タスクに自動注入 |
-| Stripe API キー | AWS Secrets Manager `prod/orderbook/stripe` | Stripe ダッシュボードで再発行可 |
-| ローカル開発用の値 | 1Password「Orderbook 開発」ボールト | チームメンバーに共有依頼 |
-
-## 9. 定期作業・運用タスク
+## 3-3. 定期作業・運用タスク
 
 | タスク | 頻度 | 自動/手動 | 手順 / 場所 |
 | --- | --- | --- | --- |
@@ -120,7 +146,7 @@ poetry run uvicorn app.main:app --reload
 - **監視 / アラート**: Datadog。アラートは PagerDuty 経由で SRE オンコールへ。
 - **ログの場所**: CloudWatch Logs `/ecs/orderbook` + Datadog Logs
 
-## 10. 既知の課題・技術的負債・落とし穴
+## 3-4. 既知の課題・技術的負債・落とし穴
 
 - 在庫引当は**結果整合性**。決済成功後に在庫不足が判明するケースが稀にあり、`app/services/inventory.py` で補償処理しているが完全ではない（⚠ 設計見直し候補）。
 - `app/services/payment.py:142` の Stripe リトライは固定回数。ネットワーク断が長いと取りこぼす。
@@ -129,7 +155,7 @@ poetry run uvicorn app.main:app --reload
   - `app/services/payment.py:142` — FIXME: exponential backoff にしたい
   - `app/api/orders.py:88` — TODO: ページネーションの上限を設定で持たせる
 
-## 11. よくあるトラブルと対応（ランブック）
+## 3-5. よくあるトラブルと対応（ランブック）
 
 | 症状 | 原因 | 対応 |
 | --- | --- | --- |
@@ -137,24 +163,8 @@ poetry run uvicorn app.main:app --reload
 | 決済だけ失敗が増える | Stripe 側障害 or キー失効 | status.stripe.com 確認、キーは Secrets Manager で確認 |
 | Celery タスクが滞留 | Redis 接続不可 / ワーカー停止 | ElastiCache とワーカータスクの状態を確認、ワーカー再起動 |
 
-## 12. 進行中の作業・TODO・今後の予定
+## 3-6. 進行中の作業・TODO・今後の予定
 
 - **進行中**: PR #312「在庫補償処理のリファクタ」レビュー中。田中さんに引き継ぎ済み。
 - **次にやる予定**: 決済リトライの exponential backoff 化（上記 FIXME）。
 - **将来的にやりたい**: 注文 API のレート制限導入、gRPC 在庫サービスのタイムアウト調整。
-
-## 13. 関係者・連絡先
-
-| 役割 | 氏名 | 連絡先 | 備考 |
-| --- | --- | --- | --- |
-| プロダクトオーナー | 佐藤 花子 | sato@example.com | 仕様の最終判断者 |
-| 後任エンジニア | 田中 太郎 | tanaka@example.com | |
-| インフラ / SRE | SRE チーム | #sre (Slack) | オンコール体制あり |
-| 外部ベンダー | （なし） | | |
-
-## 14. 関連ドキュメント・リンク集
-
-- 設計ドキュメント: https://confluence.example.com/orderbook/design
-- インフラリポジトリ: https://github.com/example/infra
-- Datadog ダッシュボード: https://app.datadoghq.com/dashboard/orderbook
-- Slack チャンネル: #orders / #orderbook-dev
