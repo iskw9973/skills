@@ -152,17 +152,7 @@ poetry run uvicorn app.main:app --reload
 | インフラ / SRE | SRE チーム | #sre (Slack) | オンコール体制あり |
 | 外部ベンダー | （なし） | | |
 
-## 14. アクセス権限・アカウント（移管 / 失効リスト）
-
-| 対象 | 種別 | 対応（移管/失効） | 担当 | 完了 |
-| --- | --- | --- | --- | --- |
-| GitHub `example/orderbook-api` の admin 権限 | リポジトリ | 田中へ移管・本人は失効 | 情シス | ☐ |
-| AWS IAM ユーザー `ishikawa` | クラウド | 失効 | SRE | ☐ |
-| Stripe ダッシュボード招待 | 外部SaaS | 失効 | 経理部 | ☐ |
-| 1Password「Orderbook 開発」ボールト | パスワード管理 | 退会 | 情シス | ☐ |
-| PagerDuty オンコール | 監視 | ローテーションから外す | SRE | ☐ |
-
-## 15. 関連ドキュメント・リンク集
+## 14. 関連ドキュメント・リンク集
 
 - 設計ドキュメント: https://confluence.example.com/orderbook/design
 - インフラリポジトリ: https://github.com/example/infra
@@ -175,6 +165,5 @@ poetry run uvicorn app.main:app --reload
 
 - [ ] 後任（田中さん）がローカルで起動できることを確認した
 - [ ] 後任がステージングへのデプロイを 1 回実施できた
-- [ ] アクセス権限の移管・失効が完了した（セクション14）
 - [ ] 関係者（PO・SRE）に後任を共有した
 - [ ] 本資料の `🖊 要記入` / `⚠ 要確認` をすべて解消した
