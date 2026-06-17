@@ -1,14 +1,14 @@
-# 引き継ぎ資料: Orderbook API
+# 引き継ぎ資料: サンプル商事コーポレートサイト
 
-> これは記入例（サンプル）です。実在しない架空のプロジェクト「Orderbook API」を題材にしています。
+> これは記入例（サンプル）です。実在しない架空の受託案件「株式会社サンプル商事 コーポレートサイトリニューアル」を題材にしています。
 
 | 項目 | 内容 |
 | --- | --- |
 | 作成者 | 石川 海斗 (ishikawam.dev@gmail.com) |
 | 作成日 | 2026-06-16 |
-| 最終出社日 | 2026-06-30 |
+| 最終出社日 / 離任日 | 2026-06-30 |
 | 後任 | 田中 太郎 (tanaka@example.com) |
-| リポジトリ | https://github.com/example/orderbook-api |
+| 得意先 | 株式会社サンプル商事 / 経営企画部 |
 
 > 凡例: `🖊 要記入` = 人が後で埋める箇所 / `⚠ 要確認` = 事実確認が必要な箇所
 
@@ -16,155 +16,171 @@
 
 # ① 案件概要
 
-## 1-1. プロジェクト概要
+## サイト概要
 
-- **何をするものか**: EC サイトの注文を受け付け、在庫引当と決済を行う REST API。
-- **ビジネス上の役割 / なぜ存在するか**: フロント（Web/アプリ）と決済・在庫システムの間に立つ中核サービス。ここが落ちると注文が一切受けられない。
-- **主なユーザー / 利用者**: 社内のフロントエンドチーム、モバイルアプリチーム。
-- **現在のステータス**: 運用中（1日あたり約 12,000 注文）
+- **何のサイト / システムか**: サンプル商事のコーポレートサイト（会社案内・採用・お知らせ）と、取引先向けの会員マイページ。
+- **得意先 / 発注元**: 株式会社サンプル商事 経営企画部（窓口: 鈴木様）
+- **目的・背景**: 旧サイト（WordPress）の老朽化に伴うリニューアル。更新作業を CMS で内製化したい、という要望が背景。
+- **公開状況**: 公開中（2026-04 リニューアル公開済み）
 
-## 1-2. 技術スタック / アーキテクチャ
+## 機能・ページ等
 
-- **言語 / ランタイム**: Python 3.12
-- **主要フレームワーク・ライブラリ**: FastAPI, SQLAlchemy, Alembic, Celery
-- **データストア**: PostgreSQL 15（注文データ）, Redis（キャッシュ + Celery ブローカー）
-- **アーキテクチャ概要**:
+| ページ / 機能 | 概要 | 備考 |
+| --- | --- | --- |
+| トップ / 会社案内 / 事業紹介 | 静的ページ。内容は microCMS から取得 | |
+| お知らせ一覧・詳細 | microCMS で得意先が更新 | |
+| 採用情報 | microCMS 管理 | |
+| お問い合わせフォーム | 送信内容を SendGrid でメール通知 + DB保存 | 送信先は 2-2 参照 |
+| 会員マイページ | ログイン後に請求書PDFを閲覧 | 認証は Laravel 側 |
 
-```
-[Frontend] --HTTP--> [Orderbook API (FastAPI)] --> [PostgreSQL]
-                            |                           
-                            |--> [Redis] <--> [Celery Worker] --> [決済サービス(Stripe)]
-                            |                                  --> [在庫サービス(社内gRPC)]
-```
+## 案件体制（社内メンバー / 社外メンバー）
 
-## 1-3. 関係者・連絡先
+| 区分 | 役割 | 氏名 | 連絡先 | 備考 |
+| --- | --- | --- | --- | --- |
+| 社内 | PM / ディレクター | 佐藤 花子 | sato@example.com | 仕様の社内窓口 |
+| 社内 | エンジニア（後任） | 田中 太郎 | tanaka@example.com | |
+| 社内 | デザイナー | 山田 次郎 | yamada@example.com | Figma 担当 |
+| 社外 | 得意先 窓口 | 鈴木様（サンプル商事） | suzuki@sample-shoji.example | 仕様の最終判断者 |
+| 社外 | サーバ保守ベンダー | （株）インフラ社 | support@infra.example | AWS 運用代行 |
 
-| 役割 | 氏名 | 連絡先 | 備考 |
-| --- | --- | --- | --- |
-| プロダクトオーナー | 佐藤 花子 | sato@example.com | 仕様の最終判断者 |
-| 後任エンジニア | 田中 太郎 | tanaka@example.com | |
-| インフラ / SRE | SRE チーム | #sre (Slack) | オンコール体制あり |
-| 外部ベンダー | （なし） | | |
+## インフラ環境（社内 or 得意先）
 
-## 1-4. 関連ドキュメント・リンク集
+- **管理主体**: 得意先（サンプル商事）の AWS アカウント上に構築。日常運用は保守ベンダー（インフラ社）が代行。
+- **アカウント所有者**: AWS = 得意先 / ドメイン `sample-shoji.example` = 得意先がお名前.comで管理 / microCMS = 社内アカウント
+- **契約・支払い**: AWS・ドメインは得意先請求。microCMS・SendGrid・Vercel は社内契約で得意先に再請求。
 
-- 設計ドキュメント: https://confluence.example.com/orderbook/design
-- インフラリポジトリ: https://github.com/example/infra
-- Datadog ダッシュボード: https://app.datadoghq.com/dashboard/orderbook
-- Slack チャンネル: #orders / #orderbook-dev
+## 関連資料
+
+- 要件定義 / 仕様書: https://drive.example.com/sample-shoji/requirements
+- デザイン（Figma）: https://figma.com/file/xxxx/sample-shoji
+- 議事録 / 共有ドライブ: https://drive.example.com/sample-shoji/
+- チャット: Chatwork「サンプル商事リニューアル」ルーム
 
 ---
 
-# ② 開発環境セットアップ
+# ② 開発環境・セットアップ
 
-## 2-1. リポジトリ構成
+## リポジトリ構成
 
-| ディレクトリ / ファイル | 役割 |
+| リポジトリ / ディレクトリ | 役割 | URL |
+| --- | --- | --- |
+| `sample-shoji-front` | フロントエンド（Next.js） | https://github.com/example/sample-shoji-front |
+| `sample-shoji-api` | バックエンド（Laravel） | https://github.com/example/sample-shoji-api |
+
+## 技術スタック
+
+| 区分 | 使用技術 |
 | --- | --- |
-| `app/api/` | FastAPI のルーティング・エンドポイント定義 |
-| `app/models/` | SQLAlchemy モデル |
-| `app/services/` | ビジネスロジック（在庫引当・決済連携） |
-| `app/tasks/` | Celery の非同期タスク |
-| `migrations/` | Alembic マイグレーション |
-| `tests/` | pytest テスト |
-| `docker-compose.yml` | ローカル開発用の DB/Redis |
+| フロントエンド | Next.js 14 (App Router) / TypeScript / Tailwind CSS |
+| バックエンド | Laravel 11 / PHP 8.3 |
+| データベース | MySQL 8 (Amazon RDS) |
+| インフラ | AWS（Vercel 併用） |
+| その他 | microCMS（ヘッドレスCMS）, SendGrid（メール） |
 
-## 2-2. ローカル開発環境のセットアップ
+## フロントエンド設定
+
+- **フレームワーク / 主要ライブラリ**: Next.js 14, TypeScript, Tailwind CSS, microcms-js-sdk
+- **ビルド / 開発コマンド**: `npm run dev`（開発） / `npm run build`（ビルド）
+- **ホスティング**: Vercel（GitHub 連携で自動デプロイ）
+- **注意点**: お知らせは microCMS の Webhook で ISR を再生成。公開後に反映されない時は Vercel の再デプロイで対応。
+
+## バックエンド設定
+
+- **フレームワーク / 言語**: Laravel 11 / PHP 8.3
+- **起動 / マイグレーション**: `php artisan serve` / `php artisan migrate`
+- **主要なバッチ / ジョブ**: 請求書PDFの夜間生成（`php artisan invoice:generate`、cron で 03:00）
+- **注意点**: 会員認証は Laravel Sanctum。フロントとは別ドメインなので CORS 設定（`config/cors.php`）に注意。
+
+## インフラ設定
+
+- **構成**: フロント=Vercel / API=AWS ECS (Fargate) / DB=RDS MySQL / 静的ファイル=S3
+- **管理方法**: Terraform（`sample-shoji-api` リポジトリの `infra/` 配下）。適用は保守ベンダーが実施。
+- **ドメイン / SSL証明書**: `sample-shoji.example` は得意先がお名前.comで管理。証明書は ACM で自動更新。
+- **DNS**: API サブドメイン `api.sample-shoji.example` の Route53 設定は社内管理。変更時は得意先に連絡。
+
+## 開発セットアップ手順
 
 前提:
-- Docker / Docker Compose, Python 3.12, Poetry
+- Node 20, PHP 8.3, Composer, Docker（MySQL 用）
 
 手順:
 ```bash
-# 1. 依存のインストール
-poetry install
-# 2. 環境変数の用意
-cp .env.example .env   # 値の取得元は .env.example のコメント参照
-# 3. DB/Redis 起動
-docker compose up -d
-# 4. マイグレーション適用
-poetry run alembic upgrade head
-# 5. 起動
-poetry run uvicorn app.main:app --reload
+# --- フロントエンド ---
+git clone git@github.com:example/sample-shoji-front.git
+cd sample-shoji-front
+npm install
+cp .env.example .env.local   # microCMS のキー等は 1Password から
+npm run dev                   # http://localhost:3000
+
+# --- バックエンド ---
+git clone git@github.com:example/sample-shoji-api.git
+cd sample-shoji-api
+composer install
+cp .env.example .env
+docker compose up -d          # MySQL
+php artisan key:generate
+php artisan migrate --seed
+php artisan serve             # http://localhost:8000
 ```
 
-- **必要な環境変数**: `DATABASE_URL`, `REDIS_URL`, `STRIPE_API_KEY`, `INVENTORY_GRPC_HOST`（値は 2-4 参照）
+## 環境変数
 
-## 2-3. ビルド・テスト・デプロイ
+> ⚠ 値そのものはここに書かない。保管場所と取得方法を書く。
 
-| 操作 | コマンド / 手順 |
-| --- | --- |
-| テスト | `poetry run pytest` |
-| Lint / 静的解析 | `poetry run ruff check . && poetry run mypy app` |
-| ローカル実行 | `poetry run uvicorn app.main:app --reload` |
-
-- **CI/CD**: `.github/workflows/ci.yml`。PR で lint+test、`main` マージで Docker イメージを ECR に push し、ECS にデプロイ。
-- **デプロイ手順**: `main` へのマージで自動。手動デプロイは `gh workflow run deploy.yml -f env=production`。
-- **ロールバック手順**: ECS コンソールで 1 つ前のタスク定義リビジョンに更新。または `deploy.yml` に過去の image tag を指定して再実行。
-
-## 2-4. 設定とシークレットの管理場所
-
-> ⚠ シークレットの値そのものはここに書かない。保管場所だけ。
-
-| シークレット / 設定 | 保管場所 | 取得・更新方法 |
+| 変数名 | 用途 | 値の保管場所 / 取得方法 |
 | --- | --- | --- |
-| DB 認証情報 | AWS Secrets Manager `prod/orderbook/db` | ECS タスクに自動注入 |
-| Stripe API キー | AWS Secrets Manager `prod/orderbook/stripe` | Stripe ダッシュボードで再発行可 |
-| ローカル開発用の値 | 1Password「Orderbook 開発」ボールト | チームメンバーに共有依頼 |
+| `MICROCMS_API_KEY` | CMS コンテンツ取得 | 1Password「サンプル商事」ボールト |
+| `SENDGRID_API_KEY` | フォーム送信メール | 1Password 同上 |
+| `DB_PASSWORD` | DB接続 | 本番は AWS Secrets Manager `sample-shoji/db` |
+| `NEXT_PUBLIC_API_BASE` | API のベースURL | `.env.example` 参照 |
+
+## ブランチ運用
+
+- **運用ルール**: `main` = 本番、`develop` = ステージング、`feature/*` で作業して `develop` へ PR。
+- **デプロイとの対応**: `main` push → Vercel 本番 & ECS 本番 / `develop` push → ステージング。
+- **PR / レビュー**: PR は佐藤さん or 後任がレビュー。得意先確認が必要なものはステージングで確認後に `main` へ。
 
 ---
 
 # ③ 運用・保守
 
-## 3-1. 実行環境・インフラ
+## 環境URL一覧
 
-| 環境 | URL / 場所 | ホスティング | 備考 |
+| 環境 | URL | ホスティング | Basic認証等 |
 | --- | --- | --- | --- |
-| 本番 | https://api.orderbook.example.com | AWS ECS Fargate (ap-northeast-1) | RDS PostgreSQL, ElastiCache |
-| ステージング | https://stg.api.orderbook.example.com | AWS ECS Fargate | 本番と同構成の縮小版 |
-| 開発 | localhost | docker-compose | |
+| 本番 | https://sample-shoji.example | Vercel + AWS | なし |
+| ステージング | https://stg.sample-shoji.example | Vercel + AWS | Basic認証あり（1Password参照） |
+| 開発 | localhost:3000 / :8000 | ローカル | なし |
 
-- **インフラ管理方法**: Terraform（別リポジトリ `example/infra` の `orderbook/` 配下）
-- **ドメイン / 証明書の管理**: Route53 + ACM。証明書は自動更新。
+## デプロイ手順
 
-## 3-2. 外部サービス・依存・連携先
+- **本番デプロイ**: `develop` で得意先確認 → `main` へマージで自動デプロイ（Vercel + GitHub Actions → ECS）。
+- **ステージングデプロイ**: `develop` への push で自動。
+- **ロールバック手順**: Vercel は管理画面で前デプロイに Promote。API は ECS で前タスク定義リビジョンに戻す。
+- **デプロイ時の注意**: お知らせ等が反映されない場合は CloudFront のキャッシュ invalidate（`/*`）が必要なことがある。
 
-| サービス | 用途 | 管理コンソール / 連絡先 | アカウント所有者 |
-| --- | --- | --- | --- |
-| Stripe | 決済 | dashboard.stripe.com | 経理部 + 開発チーム共有 |
-| 在庫サービス (社内) | 在庫引当 (gRPC) | 担当: 在庫チーム #inventory | 在庫チーム |
-| Datadog | 監視 / APM | app.datadoghq.com | SRE チーム |
+## 定常作業（必要に応じて）
 
-## 3-3. 定期作業・運用タスク
+| 作業 | 頻度 | 手順 / 場所 |
+| --- | --- | --- |
+| microCMS の利用状況確認 | 随時 | プラン上限（API転送量）に注意。上限超過でお知らせが出なくなる |
+| 請求書バッチの稼働確認 | 月初 | CloudWatch Logs `/ecs/invoice` を確認 |
+| ドメイン / 証明書期限 | 年1回 | ドメインは得意先管理。期限前にリマインド |
 
-| タスク | 頻度 | 自動/手動 | 手順 / 場所 |
-| --- | --- | --- | --- |
-| 注文データの月次集計 | 毎月1日 02:00 | 自動 | Celery Beat `app/tasks/monthly_report.py` |
-| 失敗決済のリトライ確認 | 毎朝 | 手動 | Datadog ダッシュボード「Payments」を確認、要対応なら #orders へ |
-| 依存ライブラリ更新 | 隔週 | 半自動 | Dependabot PR をレビューしてマージ |
+## 既知の問題や注意事項等
 
-- **監視 / アラート**: Datadog。アラートは PagerDuty 経由で SRE オンコールへ。
-- **ログの場所**: CloudWatch Logs `/ecs/orderbook` + Datadog Logs
-
-## 3-4. 既知の課題・技術的負債・落とし穴
-
-- 在庫引当は**結果整合性**。決済成功後に在庫不足が判明するケースが稀にあり、`app/services/inventory.py` で補償処理しているが完全ではない（⚠ 設計見直し候補）。
-- `app/services/payment.py:142` の Stripe リトライは固定回数。ネットワーク断が長いと取りこぼす。
-- テストの一部が時刻依存でたまに落ちる（`tests/test_report.py`）。`freezegun` 導入で直したいが未着手。
+- microCMS の API 転送量が無料枠に近い。アクセス増時は有料プランへ（得意先承認が必要）。⚠ 要確認: 現在の使用量。
+- お問い合わせフォームの送信失敗時、ユーザーにエラーは出るが管理側に通知が飛ばない（`app/Http/Controllers/ContactController.php:64`）。FIXME 扱い。
+- 会員マイページの請求書PDFは S3 に保存。古いものを消す仕組みが無く溜まり続ける（要対応）。
 - コード中の `TODO` / `FIXME` 抜粋:
-  - `app/services/payment.py:142` — FIXME: exponential backoff にしたい
-  - `app/api/orders.py:88` — TODO: ページネーションの上限を設定で持たせる
+  - `app/Http/Controllers/ContactController.php:64` — FIXME: 送信失敗を Slack 通知したい
+  - `sample-shoji-front/app/news/page.tsx:30` — TODO: ページネーション未実装
 
-## 3-5. よくあるトラブルと対応（ランブック）
+## トラブルシューティング
 
 | 症状 | 原因 | 対応 |
 | --- | --- | --- |
-| 注文 API が 503 | DB コネクション枯渇 | ECS タスク数を一時増やす / 長時間クエリを Datadog で特定 |
-| 決済だけ失敗が増える | Stripe 側障害 or キー失効 | status.stripe.com 確認、キーは Secrets Manager で確認 |
-| Celery タスクが滞留 | Redis 接続不可 / ワーカー停止 | ElastiCache とワーカータスクの状態を確認、ワーカー再起動 |
-
-## 3-6. 進行中の作業・TODO・今後の予定
-
-- **進行中**: PR #312「在庫補償処理のリファクタ」レビュー中。田中さんに引き継ぎ済み。
-- **次にやる予定**: 決済リトライの exponential backoff 化（上記 FIXME）。
-- **将来的にやりたい**: 注文 API のレート制限導入、gRPC 在庫サービスのタイムアウト調整。
+| お知らせを更新したのにサイトに出ない | ISR / CDN キャッシュ | Vercel を再デプロイ、または CloudFront を invalidate |
+| 会員ログインできない | CORS / Sanctum セッション | API 側 `config/cors.php` と `SESSION_DOMAIN` を確認 |
+| お問い合わせメールが届かない | SendGrid キー失効 or 送信上限 | SendGrid ダッシュボードで状態確認、キーは 1Password |
+| 請求書PDFが生成されない | 夜間バッチ失敗 | `/ecs/invoice` のログ確認、`php artisan invoice:generate` を手動実行 |
