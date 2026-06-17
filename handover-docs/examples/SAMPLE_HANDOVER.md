@@ -200,11 +200,9 @@ php artisan serve             # http://localhost:8000
 ## 既知の問題や注意事項等
 
 - microCMS の API 転送量が無料枠に近い。アクセス増時は有料プランへ（得意先承認が必要）。⚠ 要確認: 現在の使用量。
-- お問い合わせフォームの送信失敗時、ユーザーにエラーは出るが管理側に通知が飛ばない（`app/Http/Controllers/ContactController.php:64`）。FIXME 扱い。
+- お問い合わせフォームの送信失敗時、ユーザーにエラーは出るが管理側に通知が飛ばない（`app/Http/Controllers/ContactController.php` 付近）。未対応。
 - 会員マイページの請求書PDFは S3 に保存。古いものを消す仕組みが無く溜まり続ける（要対応）。
-- コード中の `TODO` / `FIXME` 抜粋:
-  - `app/Http/Controllers/ContactController.php:64` — FIXME: 送信失敗を Slack 通知したい
-  - `sample-shoji-front/app/news/page.tsx:30` — TODO: ページネーション未実装
+- お知らせ一覧はページネーション未実装。件数が増えると重くなる。
 
 ## トラブルシューティング
 
