@@ -66,10 +66,8 @@
 
 ## 関連資料
 
-- 要件定義 / 仕様書: https://drive.example.com/sample-shoji/requirements
-- デザイン（Figma）: https://figma.com/file/xxxx/sample-shoji
-- 議事録 / 共有ドライブ: https://drive.example.com/sample-shoji/
-- チャット: Chatwork「サンプル商事リニューアル」ルーム
+- Wiki: https://wiki.example.com/sample-shoji
+- 案件ドライブ: https://drive.example.com/sample-shoji/
 
 ---
 
