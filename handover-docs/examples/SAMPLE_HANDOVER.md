@@ -2,13 +2,11 @@
 
 > これは記入例（サンプル）です。実在しない架空の受託案件「株式会社サンプル商事 コーポレートサイトリニューアル」を題材にしています。
 
-| 項目 | 内容 |
-| --- | --- |
-| 作成者 | 石川 海斗 (ishikawam.dev@gmail.com) |
-| 作成日 | 2026-06-16 |
-| 最終出社日 / 離任日 | 2026-06-30 |
-| 後任 | 田中 太郎 (tanaka@example.com) |
-| 得意先 | 株式会社サンプル商事 / 経営企画部 |
+- 作成者: 石川 海斗 (ishikawam.dev@gmail.com)
+- 作成日: 2026-06-16
+- 最終出社日 / 離任日: 2026-06-30
+- 後任: 田中 太郎 (tanaka@example.com)
+- 得意先: 株式会社サンプル商事 / 経営企画部
 
 > 凡例: `🖊 要記入` = 人が後で埋める箇所 / `⚠ 要確認` = 事実確認が必要な箇所
 
@@ -25,23 +23,40 @@
 
 ## 機能・ページ等
 
-| ページ / 機能 | 概要 | 備考 |
-| --- | --- | --- |
-| トップ / 会社案内 / 事業紹介 | 静的ページ。内容は microCMS から取得 | |
-| お知らせ一覧・詳細 | microCMS で得意先が更新 | |
-| 採用情報 | microCMS 管理 | |
-| お問い合わせフォーム | 送信内容を SendGrid でメール通知 + DB保存 | 送信先は 2-2 参照 |
-| 会員マイページ | ログイン後に請求書PDFを閲覧 | 認証は Laravel 側 |
+- トップ / 会社案内 / 事業紹介
+  - 概要: 静的ページ。内容は microCMS から取得
+- お知らせ一覧・詳細
+  - 概要: microCMS で得意先が更新
+- 採用情報
+  - 概要: microCMS 管理
+- お問い合わせフォーム
+  - 概要: 送信内容を SendGrid でメール通知 + DB保存
+  - 備考: 送信先は「環境変数」参照
+- 会員マイページ
+  - 概要: ログイン後に請求書PDFを閲覧
+  - 備考: 認証は Laravel 側
 
 ## 案件体制（社内メンバー / 社外メンバー）
 
-| 区分 | 役割 | 氏名 | 連絡先 | 備考 |
-| --- | --- | --- | --- | --- |
-| 社内 | PM / ディレクター | 佐藤 花子 | sato@example.com | 仕様の社内窓口 |
-| 社内 | エンジニア（後任） | 田中 太郎 | tanaka@example.com | |
-| 社内 | デザイナー | 山田 次郎 | yamada@example.com | Figma 担当 |
-| 社外 | 得意先 窓口 | 鈴木様（サンプル商事） | suzuki@sample-shoji.example | 仕様の最終判断者 |
-| 社外 | サーバ保守ベンダー | （株）インフラ社 | support@infra.example | AWS 運用代行 |
+- PM / ディレクター（社内）
+  - 氏名: 佐藤 花子
+  - 連絡先: sato@example.com
+  - 備考: 仕様の社内窓口
+- エンジニア・後任（社内）
+  - 氏名: 田中 太郎
+  - 連絡先: tanaka@example.com
+- デザイナー（社内）
+  - 氏名: 山田 次郎
+  - 連絡先: yamada@example.com
+  - 備考: Figma 担当
+- 得意先 窓口（社外）
+  - 氏名: 鈴木様（サンプル商事）
+  - 連絡先: suzuki@sample-shoji.example
+  - 備考: 仕様の最終判断者
+- サーバ保守ベンダー（社外）
+  - 氏名: （株）インフラ社
+  - 連絡先: support@infra.example
+  - 備考: AWS 運用代行
 
 ## インフラ環境（社内 or 得意先）
 
@@ -62,20 +77,18 @@
 
 ## リポジトリ構成
 
-| リポジトリ / ディレクトリ | 役割 | URL |
-| --- | --- | --- |
-| `sample-shoji-front` | フロントエンド（Next.js） | https://github.com/example/sample-shoji-front |
-| `sample-shoji-api` | バックエンド（Laravel） | https://github.com/example/sample-shoji-api |
+- `sample-shoji-front`（フロントエンド・Next.js）
+  - URL: https://github.com/example/sample-shoji-front
+- `sample-shoji-api`（バックエンド・Laravel）
+  - URL: https://github.com/example/sample-shoji-api
 
 ## 技術スタック
 
-| 区分 | 使用技術 |
-| --- | --- |
-| フロントエンド | Next.js 14 (App Router) / TypeScript / Tailwind CSS |
-| バックエンド | Laravel 11 / PHP 8.3 |
-| データベース | MySQL 8 (Amazon RDS) |
-| インフラ | AWS（Vercel 併用） |
-| その他 | microCMS（ヘッドレスCMS）, SendGrid（メール） |
+- フロントエンド: Next.js 14 (App Router) / TypeScript / Tailwind CSS
+- バックエンド: Laravel 11 / PHP 8.3
+- データベース: MySQL 8 (Amazon RDS)
+- インフラ: AWS（Vercel 併用）
+- その他: microCMS（ヘッドレスCMS）, SendGrid（メール）
 
 ## フロントエンド設定
 
@@ -127,12 +140,18 @@ php artisan serve             # http://localhost:8000
 
 > ⚠ 値そのものはここに書かない。保管場所と取得方法を書く。
 
-| 変数名 | 用途 | 値の保管場所 / 取得方法 |
-| --- | --- | --- |
-| `MICROCMS_API_KEY` | CMS コンテンツ取得 | 1Password「サンプル商事」ボールト |
-| `SENDGRID_API_KEY` | フォーム送信メール | 1Password 同上 |
-| `DB_PASSWORD` | DB接続 | 本番は AWS Secrets Manager `sample-shoji/db` |
-| `NEXT_PUBLIC_API_BASE` | API のベースURL | `.env.example` 参照 |
+- `MICROCMS_API_KEY`
+  - 用途: CMS コンテンツ取得
+  - 保管場所 / 取得方法: 1Password「サンプル商事」ボールト
+- `SENDGRID_API_KEY`
+  - 用途: フォーム送信メール
+  - 保管場所 / 取得方法: 1Password 同上
+- `DB_PASSWORD`
+  - 用途: DB接続
+  - 保管場所 / 取得方法: 本番は AWS Secrets Manager `sample-shoji/db`
+- `NEXT_PUBLIC_API_BASE`
+  - 用途: API のベースURL
+  - 保管場所 / 取得方法: `.env.example` 参照
 
 ## ブランチ運用
 
@@ -146,11 +165,18 @@ php artisan serve             # http://localhost:8000
 
 ## 環境URL一覧
 
-| 環境 | URL | ホスティング | Basic認証等 |
-| --- | --- | --- | --- |
-| 本番 | https://sample-shoji.example | Vercel + AWS | なし |
-| ステージング | https://stg.sample-shoji.example | Vercel + AWS | Basic認証あり（1Password参照） |
-| 開発 | localhost:3000 / :8000 | ローカル | なし |
+- 本番
+  - URL: https://sample-shoji.example
+  - ホスティング: Vercel + AWS
+  - Basic認証等: なし
+- ステージング
+  - URL: https://stg.sample-shoji.example
+  - ホスティング: Vercel + AWS
+  - Basic認証等: Basic認証あり（1Password参照）
+- 開発
+  - URL: localhost:3000 / :8000
+  - ホスティング: ローカル
+  - Basic認証等: なし
 
 ## デプロイ手順
 
@@ -161,11 +187,15 @@ php artisan serve             # http://localhost:8000
 
 ## 定常作業（必要に応じて）
 
-| 作業 | 頻度 | 手順 / 場所 |
-| --- | --- | --- |
-| microCMS の利用状況確認 | 随時 | プラン上限（API転送量）に注意。上限超過でお知らせが出なくなる |
-| 請求書バッチの稼働確認 | 月初 | CloudWatch Logs `/ecs/invoice` を確認 |
-| ドメイン / 証明書期限 | 年1回 | ドメインは得意先管理。期限前にリマインド |
+- microCMS の利用状況確認
+  - 頻度: 随時
+  - 手順 / 場所: プラン上限（API転送量）に注意。上限超過でお知らせが出なくなる
+- 請求書バッチの稼働確認
+  - 頻度: 月初
+  - 手順 / 場所: CloudWatch Logs `/ecs/invoice` を確認
+- ドメイン / 証明書期限
+  - 頻度: 年1回
+  - 手順 / 場所: ドメインは得意先管理。期限前にリマインド
 
 ## 既知の問題や注意事項等
 
@@ -178,9 +208,15 @@ php artisan serve             # http://localhost:8000
 
 ## トラブルシューティング
 
-| 症状 | 原因 | 対応 |
-| --- | --- | --- |
-| お知らせを更新したのにサイトに出ない | ISR / CDN キャッシュ | Vercel を再デプロイ、または CloudFront を invalidate |
-| 会員ログインできない | CORS / Sanctum セッション | API 側 `config/cors.php` と `SESSION_DOMAIN` を確認 |
-| お問い合わせメールが届かない | SendGrid キー失効 or 送信上限 | SendGrid ダッシュボードで状態確認、キーは 1Password |
-| 請求書PDFが生成されない | 夜間バッチ失敗 | `/ecs/invoice` のログ確認、`php artisan invoice:generate` を手動実行 |
+- 症状: お知らせを更新したのにサイトに出ない
+  - 原因: ISR / CDN キャッシュ
+  - 対応: Vercel を再デプロイ、または CloudFront を invalidate
+- 症状: 会員ログインできない
+  - 原因: CORS / Sanctum セッション
+  - 対応: API 側 `config/cors.php` と `SESSION_DOMAIN` を確認
+- 症状: お問い合わせメールが届かない
+  - 原因: SendGrid キー失効 or 送信上限
+  - 対応: SendGrid ダッシュボードで状態確認、キーは 1Password
+- 症状: 請求書PDFが生成されない
+  - 原因: 夜間バッチ失敗
+  - 対応: `/ecs/invoice` のログ確認、`php artisan invoice:generate` を手動実行
