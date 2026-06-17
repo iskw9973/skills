@@ -18,10 +18,10 @@
 
 ## サイト概要
 
-- **何のサイト / システムか**: サンプル商事のコーポレートサイト（会社案内・採用・お知らせ）と、取引先向けの会員マイページ。
-- **得意先 / 発注元**: 株式会社サンプル商事 経営企画部（窓口: 鈴木様）
-- **目的・背景**: 旧サイト（WordPress）の老朽化に伴うリニューアル。更新作業を CMS で内製化したい、という要望が背景。
-- **公開状況**: 公開中（2026-04 リニューアル公開済み）
+- 何のサイト / システムか: サンプル商事のコーポレートサイト（会社案内・採用・お知らせ）と、取引先向けの会員マイページ。
+- 得意先 / 発注元: 株式会社サンプル商事 経営企画部（窓口: 鈴木様）
+- 目的・背景: 旧サイト（WordPress）の老朽化に伴うリニューアル。更新作業を CMS で内製化したい、という要望が背景。
+- 公開状況: 公開中（2026-04 リニューアル公開済み）
 
 ## 機能・ページ等
 
@@ -45,9 +45,9 @@
 
 ## インフラ環境（社内 or 得意先）
 
-- **管理主体**: 得意先（サンプル商事）の AWS アカウント上に構築。日常運用は保守ベンダー（インフラ社）が代行。
-- **アカウント所有者**: AWS = 得意先 / ドメイン `sample-shoji.example` = 得意先がお名前.comで管理 / microCMS = 社内アカウント
-- **契約・支払い**: AWS・ドメインは得意先請求。microCMS・SendGrid・Vercel は社内契約で得意先に再請求。
+- 管理主体: 得意先（サンプル商事）の AWS アカウント上に構築。日常運用は保守ベンダー（インフラ社）が代行。
+- アカウント所有者: AWS = 得意先 / ドメイン `sample-shoji.example` = 得意先がお名前.comで管理 / microCMS = 社内アカウント
+- 契約・支払い: AWS・ドメインは得意先請求。microCMS・SendGrid・Vercel は社内契約で得意先に再請求。
 
 ## 関連資料
 
@@ -79,24 +79,24 @@
 
 ## フロントエンド設定
 
-- **フレームワーク / 主要ライブラリ**: Next.js 14, TypeScript, Tailwind CSS, microcms-js-sdk
-- **ビルド / 開発コマンド**: `npm run dev`（開発） / `npm run build`（ビルド）
-- **ホスティング**: Vercel（GitHub 連携で自動デプロイ）
-- **注意点**: お知らせは microCMS の Webhook で ISR を再生成。公開後に反映されない時は Vercel の再デプロイで対応。
+- フレームワーク / 主要ライブラリ: Next.js 14, TypeScript, Tailwind CSS, microcms-js-sdk
+- ビルド / 開発コマンド: `npm run dev`（開発） / `npm run build`（ビルド）
+- ホスティング: Vercel（GitHub 連携で自動デプロイ）
+- 注意点: お知らせは microCMS の Webhook で ISR を再生成。公開後に反映されない時は Vercel の再デプロイで対応。
 
 ## バックエンド設定
 
-- **フレームワーク / 言語**: Laravel 11 / PHP 8.3
-- **起動 / マイグレーション**: `php artisan serve` / `php artisan migrate`
-- **主要なバッチ / ジョブ**: 請求書PDFの夜間生成（`php artisan invoice:generate`、cron で 03:00）
-- **注意点**: 会員認証は Laravel Sanctum。フロントとは別ドメインなので CORS 設定（`config/cors.php`）に注意。
+- フレームワーク / 言語: Laravel 11 / PHP 8.3
+- 起動 / マイグレーション: `php artisan serve` / `php artisan migrate`
+- 主要なバッチ / ジョブ: 請求書PDFの夜間生成（`php artisan invoice:generate`、cron で 03:00）
+- 注意点: 会員認証は Laravel Sanctum。フロントとは別ドメインなので CORS 設定（`config/cors.php`）に注意。
 
 ## インフラ設定
 
-- **構成**: フロント=Vercel / API=AWS ECS (Fargate) / DB=RDS MySQL / 静的ファイル=S3
-- **管理方法**: Terraform（`sample-shoji-api` リポジトリの `infra/` 配下）。適用は保守ベンダーが実施。
-- **ドメイン / SSL証明書**: `sample-shoji.example` は得意先がお名前.comで管理。証明書は ACM で自動更新。
-- **DNS**: API サブドメイン `api.sample-shoji.example` の Route53 設定は社内管理。変更時は得意先に連絡。
+- 構成: フロント=Vercel / API=AWS ECS (Fargate) / DB=RDS MySQL / 静的ファイル=S3
+- 管理方法: Terraform（`sample-shoji-api` リポジトリの `infra/` 配下）。適用は保守ベンダーが実施。
+- ドメイン / SSL証明書: `sample-shoji.example` は得意先がお名前.comで管理。証明書は ACM で自動更新。
+- DNS: API サブドメイン `api.sample-shoji.example` の Route53 設定は社内管理。変更時は得意先に連絡。
 
 ## 開発セットアップ手順
 
@@ -136,9 +136,9 @@ php artisan serve             # http://localhost:8000
 
 ## ブランチ運用
 
-- **運用ルール**: `main` = 本番、`develop` = ステージング、`feature/*` で作業して `develop` へ PR。
-- **デプロイとの対応**: `main` push → Vercel 本番 & ECS 本番 / `develop` push → ステージング。
-- **PR / レビュー**: PR は佐藤さん or 後任がレビュー。得意先確認が必要なものはステージングで確認後に `main` へ。
+- 運用ルール: `main` = 本番、`develop` = ステージング、`feature/*` で作業して `develop` へ PR。
+- デプロイとの対応: `main` push → Vercel 本番 & ECS 本番 / `develop` push → ステージング。
+- PR / レビュー: PR は佐藤さん or 後任がレビュー。得意先確認が必要なものはステージングで確認後に `main` へ。
 
 ---
 
@@ -154,10 +154,10 @@ php artisan serve             # http://localhost:8000
 
 ## デプロイ手順
 
-- **本番デプロイ**: `develop` で得意先確認 → `main` へマージで自動デプロイ（Vercel + GitHub Actions → ECS）。
-- **ステージングデプロイ**: `develop` への push で自動。
-- **ロールバック手順**: Vercel は管理画面で前デプロイに Promote。API は ECS で前タスク定義リビジョンに戻す。
-- **デプロイ時の注意**: お知らせ等が反映されない場合は CloudFront のキャッシュ invalidate（`/*`）が必要なことがある。
+- 本番デプロイ: `develop` で得意先確認 → `main` へマージで自動デプロイ（Vercel + GitHub Actions → ECS）。
+- ステージングデプロイ: `develop` への push で自動。
+- ロールバック手順: Vercel は管理画面で前デプロイに Promote。API は ECS で前タスク定義リビジョンに戻す。
+- デプロイ時の注意: お知らせ等が反映されない場合は CloudFront のキャッシュ invalidate（`/*`）が必要なことがある。
 
 ## 定常作業（必要に応じて）
 
