@@ -11,19 +11,19 @@ handover-docs/
 ├── SKILL.md                    # スキル本体（調査手順・項目・進め方）
 ├── TEMPLATE.md                 # 引き継ぎ資料の雛形
 └── examples/
-    └── SAMPLE_HANDOVER.md      # 架空プロジェクトでの記入例
+    └── PROJECT_KNOWLEDGE_BASE.sample.md  # 架空プロジェクトでの記入例
 ```
 
 ### 使い方
 
 Claude Code に「このリポジトリの引き継ぎ資料を作って」と頼むと、`SKILL.md` の手順に沿って
 
-1. コードベースを体系的に調査し（README / 依存 / CI / インフラ / TODO / git 履歴など）
+1. コードベースを体系的に調査し（README / 依存 / CI / インフラ / 外部連携など）
 2. `TEMPLATE.md` を埋め、
 3. コードから分からない情報（連絡先・権限・運用の暗黙知）を質問または `🖊 要記入` として残し、
-4. `HANDOVER.md` を出力
+4. `PROJECT_KNOWLEDGE_BASE.md` を出力
 
-します。記入後のイメージは `examples/SAMPLE_HANDOVER.md` を参照してください。
+します。記入後のイメージは `examples/PROJECT_KNOWLEDGE_BASE.sample.md` を参照してください。
 
 ### 資料の構成
 
