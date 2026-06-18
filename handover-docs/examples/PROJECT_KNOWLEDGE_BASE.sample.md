@@ -132,7 +132,6 @@ php artisan serve             # http://localhost:8000
 ## ブランチ運用
 
 - 運用ルール: `main` = 本番、`develop` = ステージング、`feature/*` で作業して `develop` へ PR。
-- デプロイとの対応: `main` push → Vercel 本番 & ECS 本番 / `develop` push → ステージング。
 - PR / レビュー: PR は佐藤さん or 後任がレビュー。得意先確認が必要なものはステージングで確認後に `main` へ。
 
 ---
