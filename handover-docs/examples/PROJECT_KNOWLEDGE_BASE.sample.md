@@ -69,12 +69,9 @@
 - インフラ: AWS（Vercel 併用）
 - その他: microCMS（ヘッドレスCMS）, SendGrid（メール）
 
-## フロントエンド設定
+## フロントエンド（デプロイ方法のみ）
 
-- フレームワーク / 主要ライブラリ: Next.js 14, TypeScript, Tailwind CSS, microcms-js-sdk
-- ビルド / 開発コマンド: `npm run dev`（開発） / `npm run build`（ビルド）
-- ホスティング: Vercel（GitHub 連携で自動デプロイ）
-- 注意点: お知らせは microCMS の Webhook で ISR を再生成。公開後に反映されない時は Vercel の再デプロイで対応。
+- デプロイ方法 / ホスティング: Vercel（GitHub 連携。`main` push で本番、`develop` push でステージングへ自動デプロイ）
 
 ## バックエンド設定
 
