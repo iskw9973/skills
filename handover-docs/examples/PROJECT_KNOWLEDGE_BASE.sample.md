@@ -56,14 +56,14 @@
 
 ## リポジトリ構成
 
-- `sample-shoji-front`（フロントエンド・Next.js）
+- `sample-shoji-front`（フロントエンド・Nuxt）
   - URL: https://github.com/example/sample-shoji-front
 - `sample-shoji-api`（バックエンド・Laravel）
   - URL: https://github.com/example/sample-shoji-api
 
 ## 技術スタック
 
-- フロントエンド: Next.js 14 (App Router) / TypeScript / Tailwind CSS
+- フロントエンド: Nuxt 3 / TypeScript / Tailwind CSS
 - バックエンド: Laravel 11 / PHP 8.3
 - データベース: MySQL 8 (Amazon RDS)
 - インフラ: AWS（Vercel 併用）
@@ -183,7 +183,7 @@ php artisan serve             # http://localhost:8000
 ## トラブルシューティング
 
 - 症状: お知らせを更新したのにサイトに出ない
-  - 原因: ISR / CDN キャッシュ
+  - 原因: ページキャッシュ / CDN キャッシュ
   - 対応: Vercel を再デプロイ、または CloudFront を invalidate
 - 症状: 会員ログインできない
   - 原因: CORS / Sanctum セッション

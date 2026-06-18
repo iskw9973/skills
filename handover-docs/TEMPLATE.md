@@ -55,7 +55,7 @@
 
 ## 技術スタック
 
-- フロントエンド: <例: Next.js 14 / TypeScript>
+- フロントエンド: <例: Nuxt 3 / TypeScript>
 - バックエンド: <例: Laravel 11 / PHP 8.3>
 - データベース: <例: MySQL 8>
 - インフラ: <例: AWS / さくらVPS>
